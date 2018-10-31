@@ -1,9 +1,12 @@
-from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QWidget, QHBoxLayout, QHeaderView
+#!/usr/bin/env python3                                    #
+# -.- coding: utf-8 -.-                                   #
+###########################################################
 
+import time
+from PyQt5.QtWidgets import QTableWidget, QWidget, QHBoxLayout, QHeaderView
 from ui.Ui_nodeNbr import Ui_Dialog as DialogForm
 from ui.Ui_Error import Ui_Error as ErrorForm
-from PyQt5 import QtCore, QtGui, QtWidgets, Qt
-
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_MainWindow(object):
 
@@ -28,12 +31,32 @@ class Ui_MainWindow(object):
                             }
                             '''
         self.stylesheetTables = "QHeaderView::section{Background-color:#224966; border - radius: 14 px;}"
+        css = '''/*  Author mahamdi amine
+                           Github https://github.com/MahamdiAmine */
+
+                            QPushButton:hover {
+                                    background-color: #161CCB;
+                                    color: #000000; 
+                                    qproperty-iconSize: 34px;     
+                            }
+
+                           QWidget { 
+                                /*background-color: C65528;*/
+                                color: rgba(39, 102, 21, 0.88)
+                            }
+
+                            QPushButton:pressed {
+                                background-color: #bbdefb;
+                            }
+                            '''
+        # self.matrix=[]
+        self.nodeNbr=6
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(734, 572)
-        MainWindow.setStyleSheet("")
-        self.nodeNbr=0
+        MainWindow.setStyleSheet(self.css)# apply the styleSheet
+        self.matrix = [[0 for x in range(self.nodeNbr)] for x in range(self.nodeNbr)]
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.drawButton = QtWidgets.QPushButton(self.centralwidget)
@@ -57,7 +80,7 @@ class Ui_MainWindow(object):
         self.calculateButton = QtWidgets.QPushButton(self.centralwidget)
         self.calculateButton.setGeometry(QtCore.QRect(50, 300, 331, 61))
         self.calculateButton.setObjectName("calculateLabel")
-        self.calculateButton.hide()
+        # self.calculateButton.hide()
         self.lcdNumber = QtWidgets.QLCDNumber(self.centralwidget)
         self.lcdNumber.setGeometry(QtCore.QRect(310, 440, 61, 31))
         self.lcdNumber.setObjectName("lcdNumber")
@@ -100,11 +123,6 @@ class Ui_MainWindow(object):
         self.nodenbrLabel.setGeometry(QtCore.QRect(510, 168, 67, 41))
         self.nodenbrLabel.setObjectName("nodenbrLabel")
         MainWindow.setCentralWidget(self.centralwidget)
-        self.actionCheck_for_updates = QtWidgets.QAction(MainWindow)
-        self.actionCheck_for_updates.setObjectName("actionCheck_for_updates")
-        self.actionAbout = QtWidgets.QAction(MainWindow)
-        self.actionAbout.setObjectName("actionAbout")
-
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -113,12 +131,15 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "TP 2: Articulation points in graph."))
         self.drawButton.setText(_translate("MainWindow", "Draw the graph -->"))
         self.drawButton.clicked.connect(self.drawGraph)
+        self.drawButton.hide()
         self.exitButton.setText(_translate("MainWindow", "EXIT"))
         self.exitButton.clicked.connect(QtCore.QCoreApplication.instance().quit)
         self.calculateButton.setText(_translate("MainWindow", "Calculate the number of articulation points -->"))
+        self.calculateButton.clicked.connect(self.calculate)
+        self.calculateButton.hide()
         self.copyrightLabel.setText(_translate("MainWindow", "<html><head/><body><p><a href=\"https://github.com/MahamdiAmine/MahamdiAmine.github.io/blob/master/LICENSE.md\"><span style=\" text-decoration: underline; color:#0000ff;\">Copyright © 2018 Mahamdi Mohammed and Boukabene Randa .</span></a></p><p><br/></p></body></html>"))
         self.titleLabel.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:16pt; font-weight:600; font-style:italic;\">TP 2 :  Calculate the number of articulation points in non oriented graph .</span></p></body></html>"))
-        self.articulationPointLabel.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-weight:600;\">  articulation points :</span></p></body></html>"))
+        self.articulationPointLabel.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-weight:600;\">  articulation points </span></p></body></html>"))
         self.textBrowser.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
             "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
             "p, li { white-space: pre-wrap; }\n"
@@ -131,7 +152,7 @@ class Ui_MainWindow(object):
         self.viewAPButton.setText(_translate("MainWindow", "View the articulation points -->"))
         self.viewGraphButton.setText(_translate("MainWindow", "View the graph -->"))
         self.nodenbrLabel.setStyleSheet("font: 30pt Comic Sans MS")
-        self.nodenbrLabel.setText(_translate("MainWindow", " 0"))
+        self.nodenbrLabel.setText(_translate("MainWindow", str(self.nodeNbr)))
 
 
     def dialog_nodeNbr(self):
@@ -139,6 +160,8 @@ class Ui_MainWindow(object):
         self.nodenbrLabel.setSizePolicy(30,30)
         self.nodenbrLabel.setText(str(self.nodeNbr))
         self.nodenbrLabel.show()
+        self.calculateButton.show()
+        self.drawButton.show()
         dialog = QtWidgets.QDialog()
         dialog.setWindowIcon(QtGui.QIcon("./img/check_mark.png"))
         dialog.ui = DialogForm()
@@ -184,7 +207,7 @@ class Ui_MainWindow(object):
                 cell_widget = QWidget()
                 lay_out = QHBoxLayout(cell_widget)
                 lay_out.addWidget(check_box)
-                # lay_out.setAlignment(Qt.Ali)
+                lay_out.setAlignment(QtCore.Qt.AlignCenter)
                 lay_out.setContentsMargins(0, 0, 0, 0)
                 cell_widget.setLayout(lay_out)
                 self.table.setCellWidget(row, col, cell_widget)
@@ -192,5 +215,29 @@ class Ui_MainWindow(object):
 
     def onStateChanged(self, checked, row, col):
         #handle the event when the user check the check box
+        # create new cell to update the table i.e:make the table symmetrical
+        cell_widget = QWidget()
+        lay_out = QHBoxLayout(cell_widget)
+        cb = QtWidgets.QCheckBox(parent=self.table)
         if checked:
-            self.table.set
+            value=1
+            cb.setChecked(True)
+        else:
+            value=0
+            cb.setChecked(False)
+        self.matrix[row][col] = value
+        lay_out.addWidget(cb)
+        lay_out.setAlignment(QtCore.Qt.AlignCenter)
+        lay_out.setContentsMargins(0, 0, 0, 0)
+        cell_widget.setLayout(lay_out)
+        self.table.setCellWidget(col, row, cell_widget)
+
+    def calculate(self):
+        # calculate the results and update the progress bar
+        self.progressBarLabel.show()
+        for i in range(33):  # progress bar level =33
+            time.sleep(0.01)
+            self.progressBarLabel.setValue(i)
+        self.lcdNumber.show()
+        self.thereisLaber.show()
+        self.articulationPointLabel.show()

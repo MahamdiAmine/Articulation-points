@@ -1,5 +1,5 @@
-# Author mahamdi amine                                    #
-# Github https://github.com/MahamdiAmine                  #
+#!/usr/bin/env python3                                    #
+# -.- coding: utf-8 -.-                                   #
 ###########################################################
 
 
