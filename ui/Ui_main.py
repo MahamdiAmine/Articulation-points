@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import QTableWidget, QWidget, QHBoxLayout, QHeaderView
 from ui.Ui_nodeNbr import Ui_Dialog as DialogForm
 from ui.Ui_Error import Ui_Error as ErrorForm
 from PyQt5 import QtCore, QtGui, QtWidgets
+from com.graph import Graph as G
 
 class Ui_MainWindow(object):
 
@@ -49,14 +50,12 @@ class Ui_MainWindow(object):
                                 background-color: #bbdefb;
                             }
                             '''
-        # self.matrix=[]
-        self.nodeNbr=6
+        self.nodeNbr=0
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(734, 572)
         MainWindow.setStyleSheet(self.css)# apply the styleSheet
-        self.matrix = [[0 for x in range(self.nodeNbr)] for x in range(self.nodeNbr)]
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.drawButton = QtWidgets.QPushButton(self.centralwidget)
@@ -112,7 +111,7 @@ class Ui_MainWindow(object):
         self.thereisLaber.setGeometry(QtCore.QRect(220, 430, 81, 41))
         self.thereisLaber.setObjectName("thereisLaber")
         self.viewAPButton = QtWidgets.QPushButton(self.centralwidget)
-        self.viewAPButton.setGeometry(QtCore.QRect(430, 280, 231, 61))
+        self.viewAPButton.setGeometry(QtCore.QRect(200, 280, 320, 61))
         self.viewAPButton.setObjectName("viewAPButton")
         self.viewAPButton.hide()
         self.viewGraphButton = QtWidgets.QPushButton(self.centralwidget)
@@ -149,7 +148,8 @@ class Ui_MainWindow(object):
         self.nodeNbrButton.clicked.connect(self.dialog_nodeNbr)
         self.thereisLaber.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-weight:600;\">There is :</span></p></body></html>"))
         self.thereisLaber.hide()
-        self.viewAPButton.setText(_translate("MainWindow", "View the articulation points -->"))
+        self.viewAPButton.setText(_translate("MainWindow", "View the articulation points in the graph-->"))
+        self.viewAPButton.clicked.connect(self.viewAPinGraph)
         self.viewGraphButton.setText(_translate("MainWindow", "View the graph -->"))
         self.nodenbrLabel.setStyleSheet("font: 30pt Comic Sans MS")
         self.nodenbrLabel.setText(_translate("MainWindow", str(self.nodeNbr)))
@@ -160,8 +160,13 @@ class Ui_MainWindow(object):
         self.nodenbrLabel.setSizePolicy(30,30)
         self.nodenbrLabel.setText(str(self.nodeNbr))
         self.nodenbrLabel.show()
-        self.calculateButton.show()
+        # self.calculateButton.show()
         self.drawButton.show()
+        self.lcdNumber.hide()
+        self.viewAPButton.hide()
+        self.progressBarLabel.hide()
+        self.thereisLaber.hide()
+        self.articulationPointLabel.hide()
         dialog = QtWidgets.QDialog()
         dialog.setWindowIcon(QtGui.QIcon("./img/check_mark.png"))
         dialog.ui = DialogForm()
@@ -171,6 +176,7 @@ class Ui_MainWindow(object):
         dialog.show()
         text=dialog.ui.accept()
         self.nodeNbr=text
+        self.matrix = [[0 for x in range(self.nodeNbr)] for x in range(self.nodeNbr)]
         self.nodenbrLabel.setText(str(text))
 
     def openError(self):
@@ -191,6 +197,7 @@ class Ui_MainWindow(object):
         self.table.setWindowTitle("Draw your graph ")
         self.table.setColumnCount(self.nodeNbr)
         self.table.setRowCount(self.nodeNbr)
+        self.calculateButton.show()
         header_labels=[]
         for counter in range(0,self.nodeNbr):
             header_labels.insert(counter,str(counter))
@@ -241,3 +248,23 @@ class Ui_MainWindow(object):
         self.lcdNumber.show()
         self.thereisLaber.show()
         self.articulationPointLabel.show()
+        self.g=G(self.nodeNbr)
+        self.g.convert_matrix_to_Adj_list(self.matrix)
+        for i in range(33):#progress bar level =66
+            time.sleep(0.01)
+            self.progressBarLabel.setValue(i+33)
+        self.g.find_Articulation_Points()
+        for i in range(35):#progress bar level =66 to 100
+            time.sleep(0.01)
+            self.progressBarLabel.setValue(i+66)
+        self.thereisLaber.show()
+        self.articulationPointLabel.show()
+        self.lcdNumber.show()
+        self.lcdNumber.setStyleSheet("""QLCDNumber {background-color:green; color: red;}""")
+        self.lcdNumber.display(self.g.No_AP)
+        self.calculateButton.hide()
+        self.drawButton.hide()
+        self.viewAPButton.show()
+
+    def viewAPinGraph(self):
+        self.g.drawGraph()
