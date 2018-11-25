@@ -1,8 +1,9 @@
-              
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % BY MAHAMDI AMINE
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass[12pt]{report}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
 \usepackage[a4paper]{geometry}
 \usepackage[myheadings]{fullpage}
 \usepackage{fancyhdr}
@@ -10,10 +11,18 @@
 \usepackage{graphicx, wrapfig, subcaption, setspace, booktabs}
 \usepackage[T1]{fontenc}
 \usepackage[font=small, labelfont=bf]{caption}
-\usepackage{fourier}
 \usepackage[protrusion=true, expansion=true]{microtype}
 \usepackage[french,english]{babel}
 \usepackage{sectsty}
+\usepackage{hyperref}
+\usepackage{listings}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
 \usepackage{url, lipsum}
 \usepackage[utf8]{inputenc}
 \usepackage{indentfirst}
@@ -29,25 +38,29 @@
 \fancyhf{}
 \setlength\headheight{15pt}
 \fancyhead[L]{fm\char`_mahamdi@esi.dz    }
-\fancyhead[R]{fr\char`boukabene@esi.dz}
+\fancyhead[R]{fr\char`_boukabane@esi.dz}
 \fancyfoot[R]{Page \thepage\ sur \pageref{LastPage}}
+\usepackage{placeins}
 %-------------------------------------------------------------------------------
 % TITLE PAGE
 %-------------------------------------------------------------------------------
 
 \begin{document}
 	\renewcommand{\contentsname}{Table des Matières}
-	\author{}        
+\renewcommand{\listfigurename}{Table des Figures}
+
+	\author{MAHAMDI Mohammed & BOUKABENE Randa }        
 	\date{} 
-	\title{  \textsc{ Calcule du nombre de points d'articulation dans un graph non orienter}
+	\title{  \textsc{ Calcule du nombre de points d'articulation dans un graphe non orienté }
 		\\ [2.0cm]
 		\HRule{0.5pt} \\
-		\LARGE \textbf{\uppercase{Rapport de TP n°2 }}
+		\LARGE \textbf{\uppercase{Rapport de TP2 }}
 		\HRule{2pt} \\ [0.5cm]
 		\normalsize \today \vspace*{5\baselineskip}}
 	\maketitle
-	\tableofcontents
-	\renewcommand{\contentsname}
+\tableofcontents
+\newpage
+\listoffigures 
 	\newpage
 	%------------------------------------------------------------------------------
 	% Section title formatting
@@ -56,12 +69,111 @@
 	%------------------------------------------------------------------------------
 	% introduction
 	%------------------------------------------------------------------------------
-	\newpage
-	\section*{Introduction}
-	 \addcontentsline{toc}{section}{Introduction}
-	 \par{}
-	 En algorithmique, optimisation combinatoire. Il modélise une situation analogue au remplissage d'un sac à dos, ne pouvant supporter plus d'un certain poids, avec tout ou partie d'un ensemble donné d'objets ayant chacun un poids et une valeur. Les objets mis dans le sac à dos doivent maximiser la valeur totale, sans dépasser le poids ma
+	%\newpage
+	\chapter{Introduction}
+	%\section{Introduction}
+	% \addcontentsline{toc}{section}{Introduction}
+	 %\par{}
 	 
+	Dans un graphe non orienté, un sommet s'appelle un point d'articulation s'il est supprimé et que tous les arcs qui lui sont associés , le nombre de composantes connexes va augmenter.\\
+	 Les points d'articulation représentent les vulnérabilités d'un réseau connecté . Ils sont utiles pour concevoir des réseaux fiables.
+	\section{Approche de solution}
+%\addcontentsline{toc}{section}{Introduction}
+	\subsection{La solution triviale}
+Soit G un graphe à n sommets et m arêtes. Un algorithme trivial de complexité d'ordre O($nm$) est le suivant :
+
+a = nombre de composantes connexes de G (déterminé à l'aide de DFS )\\
+\lstset{language=Python}
+\lstset{frame=lines}
+\lstset{label={lst:code_direct}}
+\lstset{basicstyle=\footnotesize}
+\begin{lstlisting}
+Pour chaque sommet v de V ayant des aretes incidentes
+	 retirer v de V
+	 b = nombre de composantes connexes de G une fois v elimine
+	 si b > a
+        v est un PA de G # Afficher v ou incrementer un compteur  
+        remettre en place v
+
+\end{lstlisting}
+mais on veut pas une complixité de O($nm$).
+	\subsection{La solution optimale choisi}
+L'idée est d'utiliser DFS (Depth First Search). Dans le parcours DFS, nous suivons les sommets sous forme d'arbre. un sommet $u$ est le parent d'un autre sommet $v$, si $v$ est découvert par $u$ (évidemment, $v$ est un adjacent de $u$ dans le graphe). un sommet u est un point d'articulation si l'une des deux conditions suivantes est vraie:
+\begin{enumerate}
+		\item $u$ est la racine de DFS et il a au moins deux fils.
+		\item $u$ n'est pas le racine de l'arbre DFS et $u$ a un fils $v$ tel qu'aucun sommet du sous-arbre qui a $v$ comme racine avec $v$ n'a pas d'arc de retour de l'un des parents de $u$.
+\end{enumerate}		
+
+	\chapter{Implémentation de la solution}
+	\par{}
+On a créer une classe Graph qui contient les attributs d'un graph (nombre du noeuds,le variable temps qu'on aura besoin au future et le nombre de points d'articulation) avec les deux fonctions  suivants :
+
+\lstset{language=Python}
+\lstset{frame=lines}
+\lstset{label={lst:code_direct}}
+\lstset{basicstyle=\footnotesize}
+\begin{lstlisting}
+     find_Articulation_Points(self):
+     DFS(self, node, visited, articulation_points, parent, low, discovery_time):
+\end{lstlisting}
+    \par{}          
+          la premiére fonction \textbf{find\char`_Articulation\char`_Points()} sert à initialiser les paramètres , et qui appelle récursuvement la deusième fonction \textbf{DFS(self, node, visited, articulation\char`_points, parent, low, discovery\char`_time)}.
+          \newline
+          Dans la premiere fonction on initialise le nombre de points d'articulation et le temp de découvert à zéro, et on parcours l'ensemble du noeuds , si la noeud N n'est pas visité on exucute la fonction DFS(..,N) (N est un paramètre )
+    \par{}
+          pour la deusième fonction est la fonction DFS mais elle est modifié,pour garder la trace des parents ,et savoirs'il existe un arc de retour (Back edge) ou non ,pour vérifie les deux condtions cités précedament.  
+      \newpage     
+	\section{Processus}
+	\begin{enumerate}
+		\item \textbf{On lit le nombre du neuds :}
+		\begin{figure}[h!]
+	\centering
+\includegraphics[scale=1, width=15cm]{../screenshots/1.png}
+	\caption{Saisie de le nombre du neuds}	
+	\end{figure}
+\FloatBarrier
+		\item \textbf{On lit le graphe  sous forme d'une matrice comme le montre la figure suivante :}
+			\begin{figure}[h!]
+	\centering
+\includegraphics[scale=1, width=15cm]{../screenshots/2.png}
+	\caption{Saisie des données concernant le graphe}
+	\end{figure}
+	\FloatBarrier
+	\item \textbf{Calcule du nombre de points d'articulation:}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=1, width=15cm]{../screenshots/3.png}
+		\caption{voir le nombre de points d'articulation }
+	\end{figure}
+	\FloatBarrier
+	\item \textbf{Voir les points d'articulation dans le graphe} (pour la vérification ) :
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=1, width=15cm]{../screenshots/4.png}
+		\caption{Les points d'articulation sont coloré en rouge}
+	\end{figure}
+	\FloatBarrier
+\end{enumerate}	
+	
+	
+	\section{Calcul de la complexité}
+	\par{} 
+	La complexité de l'algorithme : O($n$+$m$).	
+	\paragraph*{preuve}:
+	On a implimenter le graphe à l'aide d'une liste d'adjacents , tout les neuds sont visité une seule fois et chaque arc apparaîtra deux fois. Une fois dans la liste de d'adjacense de chaque extrémité  . Donc, la complexité finale sera : O ($n$) + O ($2m$) ~ O ($n$+$m$).
+	\section{Les outils utilisés}
+	\begin{enumerate}
+		\item \textbf{Python3} :langage de programmation. 
+		\item \textbf{PyQt 5} : L'interface graphique.
+		\item \textbf{networkx et matplotlib.pyplot} : Afficher le graphe et visualiser les points d'articulation avec les options(zoomer,enregistrer l'image,modifier les couleurs de le graphe , de les arcs ...).
+		\item \textbf{Latex} : pour génerer ce rapport .
 		
-		
-\end{document}
+\end{enumerate}	
+	\chapter{Conclusion}
+	\par{} 
+	La programmation dynamique sert à résoudre de très grand nombre de problèmes, on remarque cela dans ce TP.
+	\par{}	
+	La complexité de la programmation dynamique est polynomial tout en gardant la simplicité de la récursivité avec une complexité base.
+	\par{}
+	La programmation dynamique est un cas de l'intelligence artificielle 
+	\end{document}

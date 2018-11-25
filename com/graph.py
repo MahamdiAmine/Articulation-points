@@ -26,6 +26,7 @@ class Graph:
 
     # The function to do DFS traversal to find all the articulation points .
     def find_Articulation_Points(self):
+        self.No_AP=0
         visited = [False] * self.No_nodes# Mark all the nodes as not visited
         discovery_time = [float("Inf")] * self.No_nodes#Initialize the discovery time.
         low = [float("Inf")] * self.No_nodes
@@ -39,14 +40,11 @@ class Graph:
                 self.No_AP+=1
 
     def DFS(self, node, visited, articulation_points, parent, low, discovery_time):
-
         # a vertex u is articulation point if one of the following two conditions :
         # (1): u is root of DFS tree and it has at least two children.
         # (2): u is not root of DFS tree and it has a child v such that no
         #      vertex in subtree rooted with v has a back edge
         #      to one of the ancestors (in DFS tree) of u.
-
-
         children = 0 # Count of children in current node
         visited[node] = True # Mark the current node as visited and print it
         # Initialize discovery time and low value

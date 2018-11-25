@@ -137,13 +137,13 @@ class Ui_MainWindow(object):
         self.calculateButton.clicked.connect(self.calculate)
         self.calculateButton.hide()
         self.copyrightLabel.setText(_translate("MainWindow", "<html><head/><body><p><a href=\"https://github.com/MahamdiAmine/MahamdiAmine.github.io/blob/master/LICENSE.md\"><span style=\" text-decoration: underline; color:#0000ff;\">Copyright © 2018 Mahamdi Mohammed and Boukabene Randa .</span></a></p><p><br/></p></body></html>"))
-        self.titleLabel.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:16pt; font-weight:600; font-style:italic;\">TP 2 :  Calculate the number of articulation points in non oriented graph .</span></p></body></html>"))
+        self.titleLabel.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:16pt; font-weight:600; font-style:italic;\">TP 2 :  Calculate the number of articulation points in a non oriented graph .</span></p></body></html>"))
         self.articulationPointLabel.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-weight:600;\">  articulation points </span></p></body></html>"))
         self.textBrowser.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
             "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
             "p, li { white-space: pre-wrap; }\n"
             "</style></head><body style=\" font-family:\'Cantarell\'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
-            "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">   Hence the name, One Music is the best free band website template which you can use for all sorts of music projects of your own. Along with covering band sites, you can also be a solo artist or even a small agency and enjoy the benefits of the amazing One Music. It is an HTML website template, fully responsive, flexible, SEO optimized and cross-browser compatible. One Music has a modern web design with a zoom-in slideshow, loads content on the scroll and includes an audio player.</p></body></html>"))
+            "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">  Dans un graphe non orienté, un sommet s’appelle un point d’articulation s’il est supprimé et que tous les arcs qui lui sont associés , le nombre de composantes connexes va augmenter.\n Les points d’articulation représentent les vulnérabilités d’un réseau connecté . Ils sont utiles pour concevoir des réseaux fiables. </p></body></html>"))
         self.nodeNbrButton.setText(_translate("MainWindow", "Please Enter the number of nodes -->"))
         self.nodeNbrButton.clicked.connect(self.dialog_nodeNbr)
         self.thereisLaber.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-weight:600;\">There is :</span></p></body></html>"))
