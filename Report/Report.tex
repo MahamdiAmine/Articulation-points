@@ -8,6 +8,7 @@
 \usepackage[myheadings]{fullpage}
 \usepackage{fancyhdr}
 \usepackage{lastpage}
+\usepackage{hyperref}
 \usepackage{graphicx, wrapfig, subcaption, setspace, booktabs}
 \usepackage[T1]{fontenc}
 \usepackage[font=small, labelfont=bf]{caption}
@@ -49,16 +50,16 @@
 	\renewcommand{\contentsname}{Table des Matières}
 \renewcommand{\listfigurename}{Table des Figures}
 
-	\author{MAHAMDI Mohammed & BOUKABENE Randa }        
+	\author{MAHAMDI Mohammed & BOUKABENE Randa }       
 	\date{} 
-	\title{  \textsc{ Calcule du nombre de points d'articulation dans un graphe non orienté }
+	\title{  \textsc{ Calcule du nombre des points d'articulation dans un graphe non orienté }
 		\\ [2.0cm]
 		\HRule{0.5pt} \\
 		\LARGE \textbf{\uppercase{Rapport de TP2 }}
 		\HRule{2pt} \\ [0.5cm]
 		\normalsize \today \vspace*{5\baselineskip}}
 	\maketitle
-\tableofcontents
+	\tableofcontents
 \newpage
 \listoffigures 
 	\newpage
@@ -75,7 +76,7 @@
 	% \addcontentsline{toc}{section}{Introduction}
 	 %\par{}
 	 
-	Dans un graphe non orienté, un sommet s'appelle un point d'articulation s'il est supprimé et que tous les arcs qui lui sont associés , le nombre de composantes connexes va augmenter.\\
+	Dans un graphe non orienté, un sommet s'appelle un point d'articulation s'il est supprimé et que tous les arcs qui lui sont associés, le nombre de composantes connexes va augmenter.\\
 	 Les points d'articulation représentent les vulnérabilités d'un réseau connecté . Ils sont utiles pour concevoir des réseaux fiables.
 	\section{Approche de solution}
 %\addcontentsline{toc}{section}{Introduction}
@@ -96,9 +97,9 @@ Pour chaque sommet v de V ayant des aretes incidentes
         remettre en place v
 
 \end{lstlisting}
-mais on veut pas une complixité de O($nm$).
+Mais on ne veut pas une complixité de O($nm$).
 	\subsection{La solution optimale choisi}
-L'idée est d'utiliser DFS (Depth First Search). Dans le parcours DFS, nous suivons les sommets sous forme d'arbre. un sommet $u$ est le parent d'un autre sommet $v$, si $v$ est découvert par $u$ (évidemment, $v$ est un adjacent de $u$ dans le graphe). un sommet u est un point d'articulation si l'une des deux conditions suivantes est vraie:
+L'idée est d'utiliser DFS (Depth First Search). Dans le parcours DFS, nous suivons les sommets sous forme d'arbre. un sommet $u$ est le parent d'un autre sommet $v$, si $v$ est découvert par $u$ (évidemment, $v$ est un adjacent de $u$ dans le graphe). un sommet $u$ est un point d'articulation si l'une des deux conditions suivantes est vraie:
 \begin{enumerate}
 		\item $u$ est la racine de DFS et il a au moins deux fils.
 		\item $u$ n'est pas le racine de l'arbre DFS et $u$ a un fils $v$ tel qu'aucun sommet du sous-arbre qui a $v$ comme racine avec $v$ n'a pas d'arc de retour de l'un des parents de $u$.
@@ -106,7 +107,7 @@ L'idée est d'utiliser DFS (Depth First Search). Dans le parcours DFS, nous suiv
 
 	\chapter{Implémentation de la solution}
 	\par{}
-On a créer une classe Graph qui contient les attributs d'un graph (nombre du noeuds,le variable temps qu'on aura besoin au future et le nombre de points d'articulation) avec les deux fonctions  suivants :
+On a crée une classe Graph qui contient les attributs d'un graph (nombre des noeuds,le variable temps qu'on aura besoin au future et le nombre des points d'articulation) avec les deux fonctions suivantes :
 
 \lstset{language=Python}
 \lstset{frame=lines}
@@ -117,11 +118,21 @@ On a créer une classe Graph qui contient les attributs d'un graph (nombre du no
      DFS(self, node, visited, articulation_points, parent, low, discovery_time):
 \end{lstlisting}
     \par{}          
-          la premiére fonction \textbf{find\char`_Articulation\char`_Points()} sert à initialiser les paramètres , et qui appelle récursuvement la deusième fonction \textbf{DFS(self, node, visited, articulation\char`_points, parent, low, discovery\char`_time)}.
+          la première fonction \textbf{find\char`_Articulation\char`_Points()} sert à initialiser les paramètres , et qui qui appelle récursivement la deuxième fonction \textbf{DFS(self, node, visited, articulation\char`_points, parent, low, discovery\char`_time)}.
           \newline
-          Dans la premiere fonction on initialise le nombre de points d'articulation et le temp de découvert à zéro, et on parcours l'ensemble du noeuds , si la noeud N n'est pas visité on exucute la fonction DFS(..,N) (N est un paramètre )
+          Dans la première fonction on initialise le nombre des points d'articulation et le temps de découvert à zéro, et on parcours l'ensemble des noeuds , si le noeud $N$ n'est pas visité on exucute la fonction DFS(..,$N$) ($N$ est un paramètre).
     \par{}
-          pour la deusième fonction est la fonction DFS mais elle est modifié,pour garder la trace des parents ,et savoirs'il existe un arc de retour (Back edge) ou non ,pour vérifie les deux condtions cités précedament.  
+          Pour la deuxième fonction est la fonction DFS mais elle est modifiée, pour garder la trace des parents, et savoirs'il existe un arc de retour (Back edge) ou non, pour vérifier les deux conditions cités Précédemment. 
+          \par{}
+          \textbf{Remarque:} 
+          \par{}
+          Pour bien comprendre fonctionnement du programme  , le code source est bien documenté.
+          \par{}
+          \textbf{Code source du projet: } 
+          \newline
+          Voici  le lien vers le code source :
+          \newline
+           \href{https://github.com/MahamdiAmine/Articulation-points}{https://github.com/MahamdiAmine/Articulation-points/}
       \newpage     
 	\section{Processus}
 	\begin{enumerate}
@@ -129,7 +140,7 @@ On a créer une classe Graph qui contient les attributs d'un graph (nombre du no
 		\begin{figure}[h!]
 	\centering
 \includegraphics[scale=1, width=15cm]{../screenshots/1.png}
-	\caption{Saisie de le nombre du neuds}	
+	\caption{Saisie du nombre neuds.}	
 	\end{figure}
 \FloatBarrier
 		\item \textbf{On lit le graphe  sous forme d'une matrice comme le montre la figure suivante :}
@@ -139,18 +150,18 @@ On a créer une classe Graph qui contient les attributs d'un graph (nombre du no
 	\caption{Saisie des données concernant le graphe}
 	\end{figure}
 	\FloatBarrier
-	\item \textbf{Calcule du nombre de points d'articulation:}
+	\item \textbf{Calcule du nombre des points d'articulation:}
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[scale=1, width=15cm]{../screenshots/3.png}
-		\caption{voir le nombre de points d'articulation }
+		\caption{Affichage du nombre des ponints d'articulation. }
 	\end{figure}
 	\FloatBarrier
-	\item \textbf{Voir les points d'articulation dans le graphe} (pour la vérification ) :
+	\item \textbf{Affichage des points d'articulations dans un graphe (En couleur rouge)} (pour la vérification ):
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[scale=1, width=15cm]{../screenshots/4.png}
-		\caption{Les points d'articulation sont coloré en rouge}
+		\caption{Affichage des points d'articulations dans un graphe (En couleur rouge).}
 	\end{figure}
 	\FloatBarrier
 \end{enumerate}	
@@ -160,20 +171,22 @@ On a créer une classe Graph qui contient les attributs d'un graph (nombre du no
 	\par{} 
 	La complexité de l'algorithme : O($n$+$m$).	
 	\paragraph*{preuve}:
-	On a implimenter le graphe à l'aide d'une liste d'adjacents , tout les neuds sont visité une seule fois et chaque arc apparaîtra deux fois. Une fois dans la liste de d'adjacense de chaque extrémité  . Donc, la complexité finale sera : O ($n$) + O ($2m$) ~ O ($n$+$m$).
+	On a Implémenté le graphe à l'aide d'une liste d'd'adjacence, tout les neuds sont visités une seule fois et chaque arc apparaîtra deux fois. Une fois dans la liste d'adjacence de chaque extrémité  . Donc, la complexité finale sera : \newline 
+	{ O ($n$) + O ($2m$) $\approx$ O ($n$+$m$).}
 	\section{Les outils utilisés}
 	\begin{enumerate}
 		\item \textbf{Python3} :langage de programmation. 
 		\item \textbf{PyQt 5} : L'interface graphique.
-		\item \textbf{networkx et matplotlib.pyplot} : Afficher le graphe et visualiser les points d'articulation avec les options(zoomer,enregistrer l'image,modifier les couleurs de le graphe , de les arcs ...).
-		\item \textbf{Latex} : pour génerer ce rapport .
+		\item \textbf{networkx et matplotlib.pyplot} : Afficher le graphe et visualiser les points d'articulation avec les options(zoomer, enregistrer l'image, modifiée les couleurs du graphe, ou des arcs ...).
+		\item \textbf{Latex} : pour générer ce rapport.
 		
 \end{enumerate}	
-	\chapter{Conclusion}
-	\par{} 
-	La programmation dynamique sert à résoudre de très grand nombre de problèmes, on remarque cela dans ce TP.
-	\par{}	
-	La complexité de la programmation dynamique est polynomial tout en gardant la simplicité de la récursivité avec une complexité base.
+	\chapter{Conclusion} 
+      La théorie des graphes est la discipline mathématique et informatique qui étudie les graphes, lesquels sont des modèles abstraits de dessins de réseaux reliant des objets.
+\newline
 	\par{}
-	La programmation dynamique est un cas de l'intelligence artificielle 
+      Les algorithmes élaborés pour résoudre des problèmes concernant les objets de cette théorie ont de nombreuses applications dans tous les domaines liés à la notion de réseau (réseau social, réseau informatique, télécommunications, etc.) 
+	
+	
+	
 	\end{document}
